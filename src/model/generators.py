@@ -31,8 +31,8 @@ class GenBigGAN(nn.Module):
             for (in_m, out_m), f in zip(m_pre_chs, top_block)
         ]) # tf 256 -> 128 # here 256, 128
         self.non_loc = layers.SelfAttn(mult_chs["pre"][-1], sn=sn) # tf 128 -> # here 128
-        # should be 2 times bigger same as output of prev block i.e. 256 // 2
-        # but this implementation keeps the same dim so  ch // 2 -> attn -> ch // 4
+
+        
         self.post_up_blocks = nn.Sequential(*[
             layers.UpResnetBlock(in_m, out_m, ks, cond_dim, sn, bias=False, w_init=w_init)
             for in_m, out_m in m_post_chs
