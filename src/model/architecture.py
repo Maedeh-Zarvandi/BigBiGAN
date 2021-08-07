@@ -6,16 +6,17 @@ from src.model import encoders
 from src.model import generators
 
 
-class GAN(torch.nn.Module):
-    def generate_imgs(self, cls=None, noise=None, fixed=False):
-        if fixed:
-            noise = self.fixed_noise
-        elif noise is None:
-            noise = training_utils.truncated_normal(self.fixed_noise.shape).to(device=self.fixed_noise.device)
-        cls = self.cls if cls is None else cls
-        img_gen = self.generator(z=noise, cls=cls)
-        return img_gen, noise
 
+class GAN(torch.nn.Module):
+
+    def generate_imgs(self, cls=None, noise=None, fixed=False):
+    if fixed:
+        noise = self.fixed_noise
+    elif noise is None:
+        noise = training_utils.truncated_normal(self.fixed_noise.shape).to(device=self.fixed_noise.device)
+    cls = self.cls if cls is None else cls
+    img_gen = self.generator(z=noise, cls=cls)
+    return img_gen, noise
 
 class BigBiGAN(GAN):
     def __init__(self, generator, encoder, latent_discriminator, img_discriminator, comb_discriminator, fixed_noise, add_noise):
