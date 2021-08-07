@@ -10,6 +10,7 @@ class WDisc(nn.Module):
             param.data.clamp_(-weight_cutoff, weight_cutoff)
 
 
+
 class DiscBigGAN(nn.Module):
     def __init__(self, mult_chs, ks, num_cls, sn, w_init):
         super().__init__()
