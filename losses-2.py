@@ -1,26 +1,10 @@
 import torch
 import torch.nn.functional as F
 
-# sprobowac uproszczona wersje lossu z BiGAN bez oddzielnych dyskryminatorow dla X i Z.
+# lossu z BiGAN bez oddzielnych dyskryminatorow dla X i Z.
 
 class BiGANLoss(torch.nn.Module):
     pass
-    # def forward(self, output):
-    #     real_loss = self.aggregate_scores(
-    #         output["img_real_score"],
-    #         output["z_img_score"],
-    #         output["comb_real_score"],
-    #         generated=False,
-    #     )
-    #
-    #     gen_loss = self.aggregate_scores(
-    #         output["img_gen_score"],
-    #         output["z_noise_score"],
-    #         output["comb_gen_score"],
-    #         generated=True,
-    #     )
-    #     return real_loss + gen_loss
-
 
 class WGeneratorEncoderLoss(BiGANLoss):
     def forward(self, output):
@@ -62,16 +46,6 @@ class BiDiscriminatorLoss(BiGANLoss):
         self.bce = torch.nn.BCELoss()
 
     def forward(self, output):
-        # bigbigan version
-        # correct_real_disc = torch.mean(torch.nn.functional.relu(output["img_real_score"]) - output["img_real_score"]
-        #            + torch.nn.functional.relu(output["z_img_score"]) - output["z_img_score"]
-        #            + torch.nn.functional.relu(output["comb_real_score"]) - output["comb_real_score"]
-        #            )
-        # correct_fake_disc = torch.mean(torch.nn.functional.relu(output["z_noise_score"]) + output["z_noise_score"]
-        #            + torch.nn.functional.relu(output["img_gen_score"]) + output["img_gen_score"]
-        #            + torch.nn.functional.relu(output["comb_gen_score"]) + output["comb_gen_score"]
-        #            )
-        # correct_disc = correct_real_disc + correct_fake_disc
 
         # bigan version: criterion(out_true, y_true) + criterion(out_fake, y_fake)
         true_label = torch.ones_like(output["comb_real_score"])
